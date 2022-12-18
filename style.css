@@ -1,0 +1,19 @@
+* {
+    margin: 2px;
+}
+
+:root {
+    --blue: rgb(88, 126, 252);
+    --font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+}
+
+h1 {
+    color: white;
+    background-color: var(--blue);
+    font-family: var(--font);
+}
+
+.search-bar {
+    font-family: var(--font);
+}
