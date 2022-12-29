@@ -1,7 +1,11 @@
+var searchCity = document.querySelector('#search-button');
+var cityName = document.querySelector('#cityName');
 
 //This will fetch latitude and longitude by city
 function getApi() {
-    var requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=27da570459e0dbef2f6562c7c304faf3";
+    var cityNameVal = cityName.value
+    console.log(cityNameVal);
+    var requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityNameVal + "&limit=1&appid=27da570459e0dbef2f6562c7c304faf3";
     fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -24,21 +28,19 @@ function getApi() {
             var requestNewUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=27da570459e0dbef2f6562c7c304faf3";
 
             fetch(requestNewUrl)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function(data){
-        console.log(data)
-    })
+            .then(function (response) {
+            return response.json();
+            })
     
+            .then(function(data){
+            console.log(data)
+            })       
 
-            
-
-            
         }
-  })
+
+    })
   
 
 }
 
-getApi()
+searchCity.addEventListener('click', getApi)
