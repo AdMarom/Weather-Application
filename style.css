@@ -17,3 +17,20 @@ h1 {
 .search-bar {
     font-family: var(--font);
 }
+
+.todays-weather {
+
+    border-style: solid;
+    border-color: black;
+}
+
+.row {
+    margin: 10px;
+}
+
+.col-md-1 {
+    background-color: var(--blue);
+    color: white;
+    margin: 10px;
+
+}
