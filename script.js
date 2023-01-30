@@ -1,18 +1,50 @@
 var searchCity = document.querySelector('#search-button');
 var cityName = document.querySelector('#cityName');
+var cityCountSpan = document.querySelector('#city-count')
+
+var cityCount = []
+
+function saveToLocalStorage (city) {
+    let localStorageData = JSON.parse(localStorage.getItem ('city'))
+    if (localStorageData === null) {
+        localStorageData = [];
+        localStorageData.push(city)
+    } else {
+        localStorageData.push (city)
+    }
+
+    localStorage.setItem('city', JSON.stringify(localStorageData))
+}
+
+function populateSearchHistory() { 
+    cityCountSpan.innerHTML = "";
+
+    let localStorageData = JSON.parse(localStorage.getItem ('city'))
+    if (localStorageData != null) {
+        for (var i = 0; i < localStorageData.length; i++) {
+
+            var city = localStorageData[i];
+    
+            var historyButton = document.createElement("button");
+            historyButton.textContent = city;
+            historyButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                let cityName = event.target.innerHTML;
+                getApi(cityName)
+
+            })
+            // historyButton.setAttribute("city", i);
+            // JSON.parse(localStorage.city);
+    
+            cityCountSpan.appendChild(historyButton);
+        }
+
+    }
+}
 
 //This will fetch latitude and longitude by city
-function getApi() {
+function getApi(cityNameVal) {
 
-    //Takes the value of the user input for city
-    var cityNameVal = cityName.value
-    console.log(cityNameVal);
-
-    //Saves city to local storage
-    localStorage.setItem('city', cityNameVal);
-
-    //Shows search history from local storage on HTML
-    document.getElementById("show-results").innerHTML = localStorage.city;
 
     //Requests lat/lon from user city input
     var requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityNameVal + "&limit=1&appid=27da570459e0dbef2f6562c7c304faf3";
@@ -35,7 +67,6 @@ function getApi() {
 
             console.log(lat);
             console.log(lon);
-
             
 
             var requestUrlCurrentForecast = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=27da570459e0dbef2f6562c7c304faf3";
@@ -67,6 +98,13 @@ function getApi() {
             //Appends weather results to HTML
             document.getElementById("weather-today").innerHTML = "Today in " + cityNameVal + " (" + date + ") " + "<div id='icon'><img id='wicon' src="+ thisIcon +" alt=></div>" + " Temp: " + todayFTemp + "<br>" + " Humidity: " + humidToday + "<br>" + " Wind Speed: " + windToday + " MPH";
 
+            //var array = [cityNameVal, date, thisIcon, todayFTemp, humidToday, windToday]
+
+            //Saves today's weather to local storage
+           // localStorage.setItem('Today', array);
+
+
+            
 
             })
         }
@@ -94,84 +132,47 @@ function getApi() {
             .then(function(data){
             console.log(data)
 
-            var date = data.list[4].dt_txt;
+            let targetElement = ["Zero", "One", "Two", "Three", "Four" ];
+            let index = 0
+
+            for (let i = 4; i<data.list.length; i+=8) {
+
+                var date = data.list[i].dt_txt;
             console.log(date);
-            var icon = data.list[4].weather[0].icon
+            var icon = data.list[i].weather[0].icon
             var iconurl = "http://openweathermap.org/img/w/" + icon + ".png";
             console.log(icon);
-            var temp = data.list[4].main.temp;
+            var temp = data.list[i].main.temp;
             // Formula to change Kelvin to Fahrenheit
             var newTemp = (((temp-273.15)*9/5)+32);
             // .toFixed function does not lets numbers after decimel exceed two digits
             var FTemp = newTemp.toFixed(2);
             console.log(FTemp);
-            var humid = data.list[4].main.humidity;
+            var humid = data.list[i].main.humidity;
             console.log(humid);
-            var wind = data.list[4].wind.speed;
+            var wind = data.list[i].wind.speed;
             console.log(wind);
+            console.log(index)
+            console.log(targetElement[index])
             //Appends weather results to HTML
-            document.getElementById("weather-Zero").innerHTML = " Date: " + date +"<div id='icon'><img id='wicon' src="+ iconurl +" alt=></div>" + " Temp: " + FTemp + " Humidity: " + humid + " Wind Speed: " + wind + " MPH";
+            document.getElementById(`weather-${targetElement[index]}`).innerHTML = " Date: " + date +"<div id='icon'><img id='wicon' src="+ iconurl +" alt=></div>" + " Temp: " + FTemp + " Humidity: " + humid + " Wind Speed: " + wind + " MPH";
+            index++
+            }
 
-            var dateOne = data.list[12].dt_txt;
-            console.log(dateOne);
-            var iconOne = data.list[12].weather[0].icon
-            var iconurlOne = "http://openweathermap.org/img/w/" + iconOne + ".png";
-            console.log(icon);
-            var tempOne = data.list[12].main.temp;
-            var newTempOne = (((tempOne-273.15)*9/5)+32);
-            var FTempOne = newTempOne.toFixed(2);
-            console.log(FTempOne);
-            var humidOne = data.list[12].main.humidity;
-            console.log(humidOne);
-            var windOne = data.list[12].wind.speed;
-            console.log(windOne);
-            document.getElementById("weather-One").innerHTML = "Date: " + dateOne +"<div id='icon'><img id='wicon' src="+ iconurlOne +" alt=></div>" + " Temp: " + FTempOne + " Humidity: " + humidOne + " Wind Speed: " + windOne + " MPH";
             
-            var dateTwo = data.list[20].dt_txt;
-            console.log(dateTwo);
-            var iconTwo = data.list[20].weather[0].icon
-            var iconurlTwo = "http://openweathermap.org/img/w/" + iconTwo + ".png";
-            console.log(iconTwo);
-            var tempTwo = data.list[20].main.temp;
-            var newTempTwo = (((tempTwo-273.15)*9/5)+32);
-            var FTempTwo = newTempTwo.toFixed(2);
-            console.log(FTempTwo);
-            var humidTwo = data.list[20].main.humidity;
-            console.log(humidTwo);
-            var windTwo = data.list[20].wind.speed;
-            console.log(windTwo);
-            document.getElementById("weather-Two").innerHTML = "Date: " + dateTwo +"<div id='icon'><img id='wicon' src="+ iconurlTwo +" alt=></div>" + " Temp: " + FTempTwo + " Humidity: " + humidTwo + " Wind Speed: " + windTwo + " MPH";
-            
-            var dateThree = data.list[28].dt_txt;
-            console.log(dateThree);
-            var iconThree = data.list[28].weather[0].icon
-            var iconurlThree = "http://openweathermap.org/img/w/" + iconThree + ".png";
-            console.log(iconThree);
-            var tempThree = data.list[28].main.temp;
-            var newTempThree = (((tempThree-273.15)*9/5)+32);
-            var FTempThree = newTempThree.toFixed(2);
-            console.log(FTempThree);
-            var humidThree = data.list[28].main.humidity;
-            console.log(humidThree);
-            var windThree = data.list[28].wind.speed;
-            console.log(windThree);
-            document.getElementById("weather-Three").innerHTML =  "Date: " + dateThree +"<div id='icon'><img id='wicon' src="+ iconurlThree +" alt=></div>" + " Temp: " + FTempThree + " Humidity: " + humidThree + " Wind Speed: " + windThree + " MPH";
-            
-            var dateFour = data.list[36].dt_txt;
-            console.log(dateFour);
-            var iconFour = data.list[36].weather[0].icon
-            var iconurlFour = "http://openweathermap.org/img/w/" + iconFour + ".png";
-            console.log(icon);
-            var tempFour = data.list[36].main.temp;
-            var newTempFour = (((tempFour-273.15)*9/5)+32);
-            var FTempFour = newTempFour.toFixed(2);
-            console.log(FTempFour);
-            var humidFour = data.list[36].main.humidity;
-            console.log(humidFour);
-            var windFour = data.list[36].wind.speed;
-            console.log(windFour);
-            document.getElementById("weather-Four").innerHTML = "Date: " + dateFour +"<div id='icon'><img id='wicon' src="+ iconurlFour +" alt=></div>" + " Temp: " + FTempFour + " Humidity: " + humidFour + " Wind Speed: " + windFour + " MPH";
+             //Save search results to local storage
+            //  localStorage.setItem('Day1',  " Date: " + date +"<div id='icon'><img id='wicon' src="+ iconurl +" alt=></div>" + " Temp: " + FTemp + " Humidity: " + humid + " Wind Speed: " + wind + " MPH"); 
+            //  localStorage.setItem('Day2',  "Date: " + dateOne +"<div id='icon'><img id='wicon' src="+ iconurlOne +" alt=></div>" + " Temp: " + FTempOne + " Humidity: " + humidOne + " Wind Speed: " + windOne + " MPH");   
+            //  localStorage.setItem('Day3', "Date: " + dateTwo +"<div id='icon'><img id='wicon' src="+ iconurlTwo +" alt=></div>" + " Temp: " + FTempTwo + " Humidity: " + humidTwo + " Wind Speed: " + windTwo + " MPH");  
+            //  localStorage.setItem('Day4', "Date: " + dateThree +"<div id='icon'><img id='wicon' src="+ iconurlThree +" alt=></div>" + " Temp: " + FTempThree + " Humidity: " + humidThree + " Wind Speed: " + windThree + " MPH");
+            //  localStorage.setItem('Day5', "Date: " + dateFour +"<div id='icon'><img id='wicon' src="+ iconurlFour +" alt=></div>" + " Temp: " + FTempFour + " Humidity: " + humidFour + " Wind Speed: " + windFour + " MPH");  
+
+           
             })    
+
+           
+        
+        //Append search results to page
 
         }
 
@@ -183,5 +184,25 @@ function getApi() {
   
 
 }
+
+function init (e) {
+       e.preventDefault()
+    //Takes the value of the user input for city
+    var cityNameVal = cityName.value
+    console.log(cityNameVal);
+
+    saveToLocalStorage(cityNameVal)
+    populateSearchHistory()
+    getApi(cityNameVal)
+
+}
+
+populateSearchHistory()
+
 //Event listener for search button on HTML to fetch API information and start function
-searchCity.addEventListener('click', getApi)
+searchCity.addEventListener('click', init);
+// cityCountSpan.addEventListener('click', getApi);
+    
+//search without lat/lon
+//style buttons on top of each other
+//Do not repeat city name in search history
