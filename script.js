@@ -33,8 +33,6 @@ function populateSearchHistory() {
                 getApi(cityName)
 
             })
-            // historyButton.setAttribute("city", i);
-            // JSON.parse(localStorage.city);
     
             cityCountSpan.appendChild(historyButton);
         }
@@ -160,19 +158,7 @@ function getApi(cityNameVal) {
             }
 
             
-             //Save search results to local storage
-            //  localStorage.setItem('Day1',  " Date: " + date +"<div id='icon'><img id='wicon' src="+ iconurl +" alt=></div>" + " Temp: " + FTemp + " Humidity: " + humid + " Wind Speed: " + wind + " MPH"); 
-            //  localStorage.setItem('Day2',  "Date: " + dateOne +"<div id='icon'><img id='wicon' src="+ iconurlOne +" alt=></div>" + " Temp: " + FTempOne + " Humidity: " + humidOne + " Wind Speed: " + windOne + " MPH");   
-            //  localStorage.setItem('Day3', "Date: " + dateTwo +"<div id='icon'><img id='wicon' src="+ iconurlTwo +" alt=></div>" + " Temp: " + FTempTwo + " Humidity: " + humidTwo + " Wind Speed: " + windTwo + " MPH");  
-            //  localStorage.setItem('Day4', "Date: " + dateThree +"<div id='icon'><img id='wicon' src="+ iconurlThree +" alt=></div>" + " Temp: " + FTempThree + " Humidity: " + humidThree + " Wind Speed: " + windThree + " MPH");
-            //  localStorage.setItem('Day5', "Date: " + dateFour +"<div id='icon'><img id='wicon' src="+ iconurlFour +" alt=></div>" + " Temp: " + FTempFour + " Humidity: " + humidFour + " Wind Speed: " + windFour + " MPH");  
-
-           
-            })    
-
-           
-        
-        //Append search results to page
+            })   
 
         }
 
