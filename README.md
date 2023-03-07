@@ -8,14 +8,16 @@ This includes temperature, humidity, wind speed, and a weather icon. Their searc
 NA
 
 ## Installation
-Go to browser and search a city.
+Go to browser: https://admarom.github.io/Weather-Application/
+Search for a city.
 
 ## Use
-Start by searching any city in the US in the search bar.
+Start by searching any city in the US in the search bar. If you'd like to look at a prior search a button will popluate at the bottom of the page each time a user searches for a city. 
 
 ## Plans for future improvement
 Search without using lat/lon
 Do not repeat city name in search history
+Better CSS styling on the buttons
 
 ## Usage
 Anyone who might need to know the weather conditions
