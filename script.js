@@ -45,7 +45,7 @@ function getApi(cityNameVal) {
 
 
     //Requests lat/lon from user city input
-    var requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityNameVal + "&limit=1&appid=27da570459e0dbef2f6562c7c304faf3";
+    var requestUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityNameVal + "&limit=1&appid=27da570459e0dbef2f6562c7c304faf3";
     fetch(requestUrl)
     .then(function (response) {
       return response.json();
@@ -78,7 +78,7 @@ function getApi(cityNameVal) {
             console.log(data)
 
             var todayIcon = data.weather[0].icon
-            var thisIcon = "http://openweathermap.org/img/w/" + todayIcon + ".png";
+            var thisIcon = "https://openweathermap.org/img/w/" + todayIcon + ".png";
             console.log(thisIcon);
             var todayTemp = data.main.temp;
             // Formula to change Kelvin to Fahrenheit
@@ -120,7 +120,7 @@ function getApi(cityNameVal) {
             console.log(lon);
 
 
-            var requestNewUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=27da570459e0dbef2f6562c7c304faf3";
+            var requestNewUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=27da570459e0dbef2f6562c7c304faf3";
 
             fetch(requestNewUrl)
             .then(function (response) {
@@ -138,7 +138,7 @@ function getApi(cityNameVal) {
                 var date = data.list[i].dt_txt;
             console.log(date);
             var icon = data.list[i].weather[0].icon
-            var iconurl = "http://openweathermap.org/img/w/" + icon + ".png";
+            var iconurl = "https://openweathermap.org/img/w/" + icon + ".png";
             console.log(icon);
             var temp = data.list[i].main.temp;
             // Formula to change Kelvin to Fahrenheit
